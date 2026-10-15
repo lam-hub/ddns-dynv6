@@ -1,0 +1,13 @@
+[Unit]
+Description=Periodic check for ddns-dynv6
+Documentation=https://github.com/lam-hub/ddns-dynv6
+
+[Timer]
+# Check every 10 minutes
+OnCalendar=*:0/10
+# Also run 1 minute after boot
+OnBootSec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

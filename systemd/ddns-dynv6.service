@@ -1,0 +1,22 @@
+[Unit]
+Description=Dynamic DNS updater for dynv6.com
+Documentation=https://github.com/lam-hub/ddns-dynv6
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/ddns-dynv6.conf
+ExecStart=/usr/bin/ddns-dynv6
+StandardOutput=journal
+StandardError=journal
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/ddns-dynv6 /var/run
+
+[Install]
+WantedBy=multi-user.target

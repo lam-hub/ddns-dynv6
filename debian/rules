@@ -1,0 +1,37 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+# 清理所有构建产物
+override_dh_clean:
+	dh_clean
+	rm -rf debian/.debhelper debian/ddns-dynv6 debian/files
+	rm -f debian/*.debhelper.log debian/*.substvars
+
+# 跳过自动构建（纯shell脚本项目）
+override_dh_auto_build:
+
+# 跳过自动测试
+override_dh_auto_test:
+
+override_dh_install:
+	# Install main script
+	install -Dm755 src/ddns-dynv6.sh debian/ddns-dynv6/usr/bin/ddns-dynv6
+	
+	# Install systemd units
+	install -Dm644 systemd/ddns-dynv6.service debian/ddns-dynv6/lib/systemd/system/ddns-dynv6.service
+	install -Dm644 systemd/ddns-dynv6.timer debian/ddns-dynv6/lib/systemd/system/ddns-dynv6.timer
+	
+	# Install NetworkManager dispatcher
+	install -Dm755 dispatcher/99-ddns-dynv6 debian/ddns-dynv6/etc/NetworkManager/dispatcher.d/99-ddns-dynv6
+
+override_dh_systemd_enable:
+	dh_systemd_enable --name=ddns-dynv6 ddns-dynv6.timer
+
+override_dh_systemd_start:
+	dh_systemd_start --no-start ddns-dynv6.service
+	dh_systemd_start --no-start ddns-dynv6.timer

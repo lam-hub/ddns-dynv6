@@ -1,0 +1,39 @@
+#!/bin/bash
+# NetworkManager dispatcher script for ddns-dynv6
+# Triggers ddns-dynv6.service when IPv6 address changes on monitored interface
+
+# This script is called by NetworkManager with:
+#   $1 = interface name
+#   $2 = action (up, down, dhcp-change, ipv6-change, etc.)
+
+CONFIG_FILE="/etc/ddns-dynv6.conf"
+
+# Check if config file exists
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    exit 0
+fi
+
+# Load configuration
+INTERFACE=""
+source "$CONFIG_FILE" 2>/dev/null || exit 0
+
+# If INTERFACE not set in config, skip
+if [[ -z "$INTERFACE" ]]; then
+    exit 0
+fi
+
+# Only process events for the configured interface
+if [[ "$1" != "$INTERFACE" ]]; then
+    exit 0
+fi
+
+# Trigger update on relevant actions
+case "$2" in
+    up|dhcp-change|ipv6-change)
+        # 触发 systemd service，而不是直接执行脚本
+        # 这样可以避免并发问题，systemd 会串行处理
+        systemctl start ddns-dynv6.service &
+        ;;
+esac
+
+exit 0

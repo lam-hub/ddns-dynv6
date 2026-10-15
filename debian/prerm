@@ -1,0 +1,23 @@
+#!/bin/bash
+# Pre-removal script for ddns-dynv6
+
+set -e
+
+case "$1" in
+    remove|upgrade|deconfigure)
+        # Stop and disable timer
+        systemctl stop ddns-dynv6.timer 2>/dev/null || true
+        systemctl disable ddns-dynv6.timer 2>/dev/null || true
+        ;;
+    
+    failed-upgrade)
+        ;;
+    
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

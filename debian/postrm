@@ -1,0 +1,32 @@
+#!/bin/bash
+# Post-removal script for ddns-dynv6
+
+set -e
+
+case "$1" in
+    purge)
+        # Remove configuration file
+        rm -f /etc/ddns-dynv6.conf
+        
+        # Remove state directory
+        rm -rf /var/lib/ddns-dynv6
+        
+        # Remove any dispatcher temp files
+        rm -f /run/ddns-dynv6-dispatcher 2>/dev/null || true
+        
+        # Purge debconf database entries
+        . /usr/share/debconf/confmodule 2>/dev/null || true
+        db_purge 2>/dev/null || true
+        ;;
+    
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+        ;;
+    
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

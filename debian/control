@@ -1,0 +1,21 @@
+Source: ddns-dynv6
+Section: net
+Priority: optional
+Maintainer: lam-hub <lam@example.com>
+Build-Depends: debhelper (>= 12), dh-exec
+Standards-Version: 4.5.1
+Homepage: https://github.com/lam-hub/ddns-dynv6
+
+Package: ddns-dynv6
+Architecture: all
+Depends: ${misc:Depends}, curl, iproute2
+Recommends: network-manager
+Suggests: systemd
+Description: Dynamic DNS updater for dynv6.com
+ Automatically updates dynv6.com DNS records when IPv6 address changes.
+ .
+ Features:
+  - Real-time updates via NetworkManager dispatcher
+  - Periodic checks via systemd timer (fallback)
+  - Interactive configuration via debconf
+  - Journal-based logging

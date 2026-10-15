@@ -1,0 +1,26 @@
+Template: ddns-dynv6/interface
+Type: string
+Default: 
+Description: Network interface to monitor for IPv6 address changes:
+ Enter the name of the network interface that should be monitored for IPv6 
+ address changes (e.g., eno1, eth0, enp3s0).
+ .
+ You can find available interfaces with: ip link
+
+Template: ddns-dynv6/token
+Type: string
+Default: 
+Description: Your dynv6 API token:
+ Enter your dynv6 API token. You can get one from https://dynv6.com/
+ after creating a free account.
+ .
+ This token is required to authenticate DNS update requests.
+
+Template: ddns-dynv6/domains
+Type: string
+Default: 
+Description: Domain(s) to update:
+ Enter the dynv6 domain(s) to update when IPv6 address changes.
+ For multiple domains, separate them with spaces.
+ .
+ Example: myhost.dynv6.net

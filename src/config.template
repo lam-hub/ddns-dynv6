@@ -1,0 +1,14 @@
+# ddns-dynv6 configuration file
+# Edit this file or run 'sudo dpkg-reconfigure ddns-dynv6'
+
+# Network interface to monitor (e.g., eno1, eth0, enp3s0)
+INTERFACE=""
+
+# Your dynv6 API token (get it from https://dynv6.com/)
+TOKEN=""
+
+# Domains to update (space-separated)
+DOMAINS=""
+
+# IPv6 netmask (default: 128)
+NETMASK="128"

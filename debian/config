@@ -1,0 +1,30 @@
+#!/bin/bash
+# debconf config script for ddns-dynv6
+
+set -e
+
+# Source debconf library
+. /usr/share/debconf/confmodule
+
+# Get current configuration if exists
+CONFIG_FILE="/etc/ddns-dynv6.conf"
+
+if [ -f "$CONFIG_FILE" ]; then
+    # Read current values
+    INTERFACE=$(grep "^INTERFACE=" "$CONFIG_FILE" 2>/dev/null | cut -d'"' -f2 || true)
+    TOKEN=$(grep "^TOKEN=" "$CONFIG_FILE" 2>/dev/null | cut -d'"' -f2 || true)
+    DOMAINS=$(grep "^DOMAINS=" "$CONFIG_FILE" 2>/dev/null | cut -d'"' -f2 || true)
+    
+    # Set defaults from existing config
+    [ -n "$INTERFACE" ] && db_set ddns-dynv6/interface "$INTERFACE"
+    [ -n "$TOKEN" ] && db_set ddns-dynv6/token "$TOKEN"
+    [ -n "$DOMAINS" ] && db_set ddns-dynv6/domains "$DOMAINS"
+fi
+
+# Ask questions
+db_input high ddns-dynv6/interface || true
+db_input high ddns-dynv6/token || true
+db_input high ddns-dynv6/domains || true
+db_go
+
+exit 0

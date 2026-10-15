@@ -1,0 +1,9 @@
+ddns-dynv6 (0.1.0) unstable; urgency=medium
+
+  * Initial release
+  * Support for dynv6.com dynamic DNS updates
+  * NetworkManager dispatcher for real-time updates
+  * systemd timer as fallback mechanism
+  * Interactive configuration via debconf
+
+ -- lam-hub <lam@example.com>  Thu, 16 Oct 2026 00:00:00 +0800
